@@ -228,8 +228,8 @@ struct GameButton {
 // Game buttons array
 const int numButtons = 6;
 GameButton gameButtons[numButtons] = {
-  {4, 0, false}, // Button 1 - "A"
-  {5, 0, false}, // Button 2 - "C"
+  {4, 0, false}, // Button 1 
+  {5, 0, false}, // Button 2 
   {6, 0, false}, // Button 3 
   {7, 0, false}, // Button 4
   {8, 0, false}, // Button 5
@@ -303,7 +303,6 @@ VoiceCommand voiceCommands[numCommands] = {
   {"Right", rightKey, 0, 500, rightBitmap, false} // Right
 };
 
-
 void setup() {
   // Initialize serial communication and
   // wait for it to be established
@@ -328,7 +327,7 @@ void setup() {
   if(myVR.clear() == 0){
     Serial.println("Recognizer cleared.");
   }else{
-    Serial.println("Not find VoiceRecognitionModule.");
+    Serial.println("Voice Recognition Module not found.");
     while(1);
   }
   

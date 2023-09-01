@@ -271,7 +271,6 @@ int iconSize = 56;
 int iconSelected = -1;
 bool iconDisplayed = false;
 unsigned long iconStartMillis;
-unsigned long iconCurrentMillis;
 const unsigned long iconPeriod = 1500; 
 
 // Voice recogniztion module object
@@ -374,20 +373,19 @@ void processDisplay() {
       iconDisplayed = true;
       iconStartMillis = millis();
     } else {
-      iconCurrentMillis = millis();
-      if (iconCurrentMillis - iconStartMillis >= iconPeriod) {
+      unsigned long currentMillis = millis();
+      if (currentMillis - iconStartMillis >= iconPeriod) {
         iconSelected = -1;
         iconDisplayed = false;
       }
     }
   } 
-
   // Display listening animation
   else {
     // Calculate circle radius
     float animationProgress = float(animationFrame) / float(animationFrames - 1);
-    float animationPhase = animationProgress * 2.0 * PI;  // Maps progress to phase (0 to 2PI)
-    float pulsatingFactor = (cos(animationPhase) + 1.0) / 2.0;  // Cosine function maps [-1, 1] to [0, 1]
+    float animationPhase = animationProgress * 2.0 * PI; 
+    float pulsatingFactor = (cos(animationPhase) + 1.0) / 2.0;
     int currentRadius = minRadius + int((maxRadius - minRadius) * pulsatingFactor);
 
     // Display mic and circle
@@ -427,7 +425,7 @@ void processVoice() {
   } 
   // Process no voice record match
   else {
-    int currentMillis = millis();
+    unsigned long currentMillis = millis();
     for (int i = 0; i < numCommands; i++) {
       if (voiceCommands[i].isPressed == true && currentMillis - voiceCommands[i].startMillis >= voiceCommands[i].period) {      
         Keyboard.release(voiceCommands[i].key);
@@ -438,6 +436,7 @@ void processVoice() {
 }
 
 void processButtons() {
+  
   // Loop through all buttons
   for (int i = 0; i < numButtons; i++) {
     
@@ -448,14 +447,14 @@ void processButtons() {
     if (buttonVal == LOW && gameButtons[i].isPressed == false) {
       Keyboard.press(gameButtons[i].key);
       gameButtons[i].isPressed = true;
-      Serial.println("Button " + String(i+1) + "pressed");
+      Serial.println("Button pressed");
     }
 
     // Release key on button release
     if (buttonVal == HIGH && gameButtons[i].isPressed == true) {
       Keyboard.release(gameButtons[i].key);
       gameButtons[i].isPressed = false;
-      Serial.println("Button " + String(i+1) + "released");
+      Serial.println("Button released");
     }
   }
 }

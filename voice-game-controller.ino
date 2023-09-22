@@ -225,23 +225,31 @@ struct GameButton {
   bool isPressed;
 };
 
+// Button input mappings
+int button1Key = 105;
+int button2Key = 101;
+int button3Key = 97;
+int button4Key = 32;
+int button5Key = 176;
+int button6Key = 122;
+
 // Game buttons array
 const int numButtons = 6;
 GameButton gameButtons[numButtons] = {
-  {4, 0, false}, // Button 1 
-  {5, 0, false}, // Button 2 
-  {6, 0, false}, // Button 3 
-  {7, 0, false}, // Button 4
-  {8, 0, false}, // Button 5
-  {9, 0, false}  // Button 6
+  {4, button1Key, false}, // Button 1
+  {5, button2Key, false}, // Button 2
+  {6, button3Key, false}, // Button 3
+  {7, button4Key, false}, // Button 4
+  {8, button5Key, false}, // Button 5
+  {9, button6Key, false}  // Button 6
 };
 
 // Joystick pins
 int xPin = A0;
 int yPin = A1;
 
-// Joystick key bindings
-int upKey = KEY_UP_ARROW;
+// Joystick input mapping
+int upKey = KEY_UP_ARROW; 
 int downKey = KEY_DOWN_ARROW;
 int leftKey = KEY_LEFT_ARROW;
 int rightKey = KEY_RIGHT_ARROW;
@@ -268,16 +276,15 @@ int animationFrame = 0;
 
 // Voice command icon settings
 int iconSize = 56;
-int iconSelected = -1;
+int iconIndex = -1;
 bool iconDisplayed = false;
 unsigned long iconStartMillis;
-const unsigned long iconPeriod = 1500; 
+const unsigned long iconDuration = 1500; 
 
-// Voice recogniztion module object
+// Voice recognition module object
 VR myVR(10,11);   
 
-// Records, buffer
-uint8_t records[7];
+// Voice recognition buffer
 uint8_t buf[64];
 
 // Voice command structure
@@ -285,26 +292,34 @@ struct VoiceCommand {
   String name;
   int key;
   unsigned long startMillis;
-  unsigned long period;
-  const unsigned char* bitmap;
+  unsigned long duration;
   bool isPressed;
+  const unsigned char* bitmap;
 };
+
+// Voice command input mappings
+int jumpCommandKey = 32;
+int runCommandKey = 101;
+int shootCommandKey = 97;
+int upCommandKey = KEY_UP_ARROW;
+int downCommandKey = KEY_DOWN_ARROW;
+int leftCommandKey = KEY_LEFT_ARROW;
+int rightCommandKey = KEY_RIGHT_ARROW;
 
 // Game voice commands
 const int numCommands = 7;
 VoiceCommand voiceCommands[numCommands] = {
-  {"Jump", 0, 0, 500, jumpBitmap, false}, // Jump
-  {"Run", 0, 0, 500, runBitmap, false}, // Run
-  {"Shoot", 0, 0, 500, shootBitmap, false}, // Shoot
-  {"Up", upKey, 0, 500, upBitmap, false}, // Up
-  {"Down", downKey, 0, 500, downBitmap, false}, // Down
-  {"Left", leftKey, 0, 500, leftBitmap, false}, // Left
-  {"Right", rightKey, 0, 500, rightBitmap, false} // Right
+  {"Jump", jumpCommandKey, 0, 500, false, jumpBitmap}, // Jump
+  {"Run", runCommandKey, 0, 500, false, runBitmap}, // Run
+  {"Shoot", shootCommandKey, 0, 250, false, shootBitmap}, // Shoot
+  {"Up", upCommandKey, 0, 1000, false, upBitmap}, // Up
+  {"Down", downCommandKey, 0, 1000, false, downBitmap}, // Down
+  {"Left", leftCommandKey, 0, 1000, false, leftBitmap}, // Left
+  {"Right", rightCommandKey, 0, 1000, false, rightBitmap} // Right
 };
 
 void setup() {
-  // Initialize serial communication and
-  // wait for it to be established
+  // Initialize serial communication
   Serial.begin(115200);
 
   // Initialize oled display
@@ -357,7 +372,7 @@ void loop() {
 
 void processDisplay() {
   // Display command icon if active
-  if (iconSelected > -1) {
+  if (iconIndex > -1) {
     if (iconDisplayed == false) {
 
       // Display the selected icon
@@ -365,7 +380,7 @@ void processDisplay() {
       display.drawBitmap(
         centerX - iconSize/2, 
         centerY - iconSize/2, 
-        voiceCommands[iconSelected].bitmap,
+        voiceCommands[iconIndex].bitmap,
         iconSize, 
         iconSize, 
         WHITE
@@ -374,8 +389,8 @@ void processDisplay() {
       iconStartMillis = millis();
     } else {
       unsigned long currentMillis = millis();
-      if (currentMillis - iconStartMillis >= iconPeriod) {
-        iconSelected = -1;
+      if (currentMillis - iconStartMillis >= iconDuration) {
+        iconIndex = -1;
         iconDisplayed = false;
       }
     }
@@ -414,20 +429,20 @@ void processVoice() {
 
   // Process voice record match
   if (ret > 0) {
-    int record = buf[1];
-    if (voiceCommands[record].isPressed == false) {
-      Serial.println(String(voiceCommands[record].name) + " command recognized");
-      Keyboard.press(voiceCommands[record].key);
-      voiceCommands[record].isPressed = true;
-      voiceCommands[record].startMillis = millis();
-      iconSelected = record;
+    int index = buf[1];
+    if (voiceCommands[index].isPressed == false) {
+      Serial.println(String(voiceCommands[index].name) + " command recognized");
+      Keyboard.press(voiceCommands[index].key);
+      voiceCommands[index].isPressed = true;
+      voiceCommands[index].startMillis = millis();
+      iconIndex = index;
     }
   } 
   // Process no voice record match
   else {
     unsigned long currentMillis = millis();
     for (int i = 0; i < numCommands; i++) {
-      if (voiceCommands[i].isPressed == true && currentMillis - voiceCommands[i].startMillis >= voiceCommands[i].period) {      
+      if (voiceCommands[i].isPressed == true && currentMillis - voiceCommands[i].startMillis >= voiceCommands[i].duration) {      
         Keyboard.release(voiceCommands[i].key);
         voiceCommands[i].isPressed = false;
       }
@@ -436,7 +451,6 @@ void processVoice() {
 }
 
 void processButtons() {
-  
   // Loop through all buttons
   for (int i = 0; i < numButtons; i++) {
     

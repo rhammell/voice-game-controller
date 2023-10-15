@@ -322,6 +322,9 @@ void setup() {
   // Initialize serial communication
   Serial.begin(115200);
 
+  // Delay
+  delay(2000);
+
   // Initialize oled display
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));

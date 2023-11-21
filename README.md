@@ -4,11 +4,9 @@ This repository contains the code and 3D models required to build the Voice-Enab
 ## How It Works
 The voice-enabled video game controller serves as an input device for computer-based video games, allowing users to play games using their voice.
 
-In addition to traditional physical inputs, such as a joystick and buttons, the controller is capable of recognizing multiple voice commands from the user as voice inputs. The controller includes an onboard microphone and voice recognition components that enable it to listen for and identify commands when they are spoken. A built-in OLED display provides visual feedback each time a command is recognized.
+In addition to traditional inputs like a joystick and buttons, the controller recognizes voice commands through its onboard microphone and voice recognition components. A built-in OLED display provides visual feedback for recognized commands. 
 
-When connected to a computer via a USB cable, the controller emulates a keyboard and transmits specific keystrokes to the computer with each joystick movement, button press, and voice command. 
-
-The mapping between each input and its associated keystroke can be configured within the software running on the controller. Users can customize this keystroke mapping to create a personalized controller setup that works independently of any game. 
+When connected to a computer via USB, the controller emulates a keyboard, transmitting specific keystrokes for joystick movements, button presses, and voice commands. Users can customize keystroke mapping within the controller's software for a personalized setup independent of any game.
 
 ## Demo Video
 [![Video](https://img.youtube.com/vi/spnh6j_cPNY/0.jpg)](https://www.youtube.com/watch?v=spnh6j_cPNY)

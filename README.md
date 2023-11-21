@@ -3,6 +3,9 @@ This repository contains the code and 3D models required to build the Voice-Enab
 
 Read the full project description and build tutorial on [Hackster.io](https://www.hackster.io/rhammell/voice-enabled-video-game-controller-c76200).
 
+## Demo Video
+[![Video](https://img.youtube.com/vi/spnh6j_cPNY/0.jpg)](https://www.youtube.com/watch?v=spnh6j_cPNY)
+
 ## How It Works
 The voice-enabled video game controller serves as an input device for computer-based video games, allowing users to play games using their voice.
 
@@ -11,7 +14,3 @@ In addition to traditional physical inputs, such as a joystick and buttons, the 
 When connected to a computer via a USB cable, the controller emulates a keyboard and transmits specific keystrokes to the computer with each joystick movement, button press, and voice command. 
 
 The mapping between each input and its associated keystroke can be configured within the software running on the controller. Users can customize this keystroke mapping to create a personalized controller setup that works independently of any game. 
-
-## Demo Video
-[![Video](https://img.youtube.com/vi/spnh6j_cPNY/0.jpg)](https://www.youtube.com/watch?v=spnh6j_cPNY)
-

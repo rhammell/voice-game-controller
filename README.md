@@ -15,3 +15,6 @@ The mapping between each input and its associated keystroke can be configured wi
 ## Completed Project
 <img src="img/voice_controller.gif">
 
+## Demo Video
+[![Video](https://img.youtube.com/vi/spnh6j_cPNY/maxresdefault.jpg)](https://www.youtube.com/watch?v=spnh6j_cPNY)
+

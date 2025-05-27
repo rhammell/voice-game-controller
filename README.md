@@ -1,5 +1,7 @@
 # voice-game-controller
-This repository contains the code and 3D models required to build the Voice-Enabled Video Game Controller. Read the full project description and build tutorial on [Hackster.io](https://www.hackster.io/rhammell/voice-enabled-video-game-controller-c76200).
+This repository contains the code and 3D models required to build the Voice-Enabled Video Game Controller. 
+
+Read the [project guide](https://www.hackster.io/rhammell/voice-enabled-video-game-controller-c76200) on Hackster.io for a complete project description and build tutorial.
 
 ## Project Description
 The voice-enabled video game controller serves as an input device for computer-based video games, allowing users to play games using their voice.
